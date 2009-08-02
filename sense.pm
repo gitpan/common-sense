@@ -89,7 +89,7 @@ kitten!
 
 package common::sense;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub import {
    # no warnings
@@ -127,6 +127,50 @@ C<say> or so with perls older than 5.10 (this module, of course, should
 work with older perl versions - supporting 5.8 for example is just common
 sense at this time. Maybe not in the future, but of course you can trust
 our common sense).
+
+
+=head1 WHAT OTHER PEOPLE HAVE TO SAY ABOUT THIS MODULE
+
+Pista Palo
+
+   "Something in short supply these days..."
+
+Steffen Schwigon
+
+   "This module is quite for sure *not* just a repetition of all the other
+   'use strict, use warnings'-approaches, and it's also not the opposite.
+   [...] And for its chosen middle-way it's also not the worst name ever.
+   And everything is documented."
+
+BKB
+
+   "[Deleted - thanks to Steffen Schwigon for pointing out this review was
+   in error.]"
+
+Somni
+
+   "the arrogance of the guy"
+   "I swear he tacked somenoe else's name onto the module
+   just so he could use the royal 'we' in the documentation"
+
+dngor
+
+   "Heh.  '"<elmex at ta-sa.org>"'  The quotes are semantic
+   distancing from that e-mail address."
+
+Jerad Pierce
+
+   "Awful name (not a proper pragma), and the SYNOPSIS doesn't tell you
+   anything either. Nor is it clear what features have to do with "common
+   sense" or discipline."
+
+acme
+
+   "THERE IS NO 'no common::sense'!!!! !!!! !!"
+
+crab
+
+   "i wonder how it would be if joerg schilling wrote perl modules."
 
 =head1 AUTHOR
 
