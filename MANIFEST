@@ -1,7 +1,7 @@
 README
+LICENSE
 Changes
 MANIFEST
-COPYING
 Makefile.PL
 sense.pm
 t/00_load.t

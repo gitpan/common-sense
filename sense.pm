@@ -22,15 +22,18 @@ Perl coders.
 
 =item no warnings
 
-The dreaded warnings. Even worse, the horribly dreaded C<-w> switch. Even
-though we don't care if other people use warnings (and certainly there are
-useful ones), a lot of warnings simply go against the spirit of Perl, most
-prominently, the warnings related to C<undef>. There is nothing wrong with
-C<undef>: it has well-defined semantics, it is useful, and spitting out
-warnings you never asked for is just evil.
+Ah, the dreaded warnings. Even worse, the horribly dreaded C<-w>
+switch: Even though we don't care if other people use warnings (and
+certainly there are useful ones), a lot of warnings simply go against the
+spirit of Perl.
+
+Most prominently, the warnings related to C<undef>. There is nothing wrong
+with C<undef>: it has well-defined semantics, it is useful, and spitting
+out warnings you never asked for is just evil.
 
 So every module needs C<no warnings> to avoid somebody accidentally using
-C<-w> and forcing his bad standards on our code. No will do.
+C<-w> and forcing his bad standards on our code. No will do. Really, the
+C<-w> switch should only enable wanrings for the main program.
 
 Funnily enough, L<perllexwarn> explicitly mentions C<-w> (and not in a
 favourable way), but standard utilities, such as L<prove>, or MakeMaker
@@ -39,7 +42,7 @@ when running C<make test> enable them blindly.
 =item use strict qw(subs vars)
 
 Using C<use strict> is definitely common sense, but C<use strict
-'refs'> definitely overshoots it's usefulness. After almost two
+'refs'> definitely overshoots its usefulness. After almost two
 decades of Perl hacking, we decided that it does more harm than being
 useful. Specifically, constructs like these:
 
@@ -51,45 +54,55 @@ scope, and C<$var> can legally be C<undef>:
    @{ $var->[0] || [] }
 
 This is annoying, and doesn't shield against obvious mistakes such as
-using C<"">, so one would even have to write:
+using C<"">, so one would even have to write (at least for the time
+being):
 
    @{ defined $var->[0] ? $var->[0] :  [] }
 
 ... which nobody with a bit of common sense would consider
-writing. Curiously enough, sometimes, perl is not so strict, as this works
-even with C<use strict> in scope:
+writing.
+
+Curiously enough, sometimes perl is not so strict, as this works even with
+C<use strict> in scope:
 
    for (@{ $var->[0] }) { ...
 
-If that isnt hipocrasy! And all that from a mere program!
+If that isn't hipocrasy! And all that from a mere program!
 
 =item use feature qw(say state given)
 
 We found it annoying that we always have to enable extra features. If
 something breaks because it didn't anticipate future changes, so be
-it. 5.10 broke almost all our XS modules and nobody cared either - and few
-modules that are no longer maintained work with newer versions of Perl,
-regardless of use feature.
+it. 5.10 broke almost all our XS modules and nobody cared either (or at
+leats I know of nobody who really complained about gratitious changes - as
+opposed to bugs).
 
-If your code isn't alive, it's dead, jim.
+Few modules that are not actively maintained work with newer versions of
+Perl, regardless of use feature or not, so a new major perl release means
+changes to many modules - new keywords are just the tip of the iceberg.
 
-=item much less memory
+If your code isn't alive, it's dead, jim - be an active maintainer.
 
-Just using all those pragmas together waste <blink>I<< B<776> kilobytes
->></blink> of precious memory in my perl, for I<every single perl process
-using our code>, which on our machines, is a lot. In comparison, this
-module only uses I<< B<four> >> kilobytes (I even had to write it out so
-it looks like more) of memory on the same platform.
+=item mucho reduced memory usage
+
+Just using all those pragmas mentioned in the SYNOPSIS together wastes
+<blink>I<< B<776> kilobytes >></blink> of precious memory in my perl, for
+I<every single perl process using our code>, which on our machines, is a
+lot. In comparison, this module only uses I<< B<four> >> kilobytes (I even
+had to write it out so it looks like more) of memory on the same platform.
 
 The money/time/effort/electricity invested in these gigabytes (probably
 petabytes globally!) of wasted memory could easily save 42 trees, and a
 kitten!
 
+Unfortunately, until everybods applies more common sense, there will still
+often be modules that pull in the monster pragmas. But one can hope...
+
 =cut
 
 package common::sense;
 
-our $VERSION = '0.04';
+our $VERSION = '1.0';
 
 sub import {
    # no warnings
@@ -126,10 +139,22 @@ all of them. And maybe we will load some nifty modules that try to emulate
 C<say> or so with perls older than 5.10 (this module, of course, should
 work with older perl versions - supporting 5.8 for example is just common
 sense at this time. Maybe not in the future, but of course you can trust
-our common sense).
+our common sense to be consistent with, uhm, our opinion).
 
+=head1 WHAT OTHER PEOPLE HAD TO SAY ABOUT THIS MODULE
 
-=head1 WHAT OTHER PEOPLE HAVE TO SAY ABOUT THIS MODULE
+apeiron
+
+   "... wow"
+   "I hope common::sense is a joke."
+
+crab
+
+   "i wonder how it would be if joerg schilling wrote perl modules."
+
+H.Merijn Brand
+
+   "Just one more reason to drop JSON::XS from my distribution list"
 
 Pista Palo
 
@@ -168,17 +193,12 @@ acme
 
    "THERE IS NO 'no common::sense'!!!! !!!! !!"
 
-crab
-
-   "i wonder how it would be if joerg schilling wrote perl modules."
-
 =head1 AUTHOR
 
  Marc Lehmann <schmorp@schmorp.de>
  http://home.schmorp.de/
 
  Robin Redeker, "<elmex at ta-sa.org>".
-
 
 =cut
 

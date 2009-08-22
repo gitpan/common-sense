@@ -16,16 +16,19 @@ DESCRIPTION
     Perl coders.
 
     no warnings
-        The dreaded warnings. Even worse, the horribly dreaded "-w" switch.
-        Even though we don't care if other people use warnings (and
+        Ah, the dreaded warnings. Even worse, the horribly dreaded "-w"
+        switch: Even though we don't care if other people use warnings (and
         certainly there are useful ones), a lot of warnings simply go
-        against the spirit of Perl, most prominently, the warnings related
-        to "undef". There is nothing wrong with "undef": it has well-defined
-        semantics, it is useful, and spitting out warnings you never asked
-        for is just evil.
+        against the spirit of Perl.
+
+        Most prominently, the warnings related to "undef". There is nothing
+        wrong with "undef": it has well-defined semantics, it is useful, and
+        spitting out warnings you never asked for is just evil.
 
         So every module needs "no warnings" to avoid somebody accidentally
         using "-w" and forcing his bad standards on our code. No will do.
+        Really, the "-w" switch should only enable wanrings for the main
+        program.
 
         Funnily enough, perllexwarn explicitly mentions "-w" (and not in a
         favourable way), but standard utilities, such as prove, or MakeMaker
@@ -33,7 +36,7 @@ DESCRIPTION
 
     use strict qw(subs vars)
         Using "use strict" is definitely common sense, but "use strict
-        'refs'" definitely overshoots it's usefulness. After almost two
+        'refs'" definitely overshoots its usefulness. After almost two
         decades of Perl hacking, we decided that it does more harm than
         being useful. Specifically, constructs like these:
 
@@ -45,37 +48,49 @@ DESCRIPTION
            @{ $var->[0] || [] }
 
         This is annoying, and doesn't shield against obvious mistakes such
-        as using "", so one would even have to write:
+        as using "", so one would even have to write (at least for the time
+        being):
 
            @{ defined $var->[0] ? $var->[0] :  [] }
 
         ... which nobody with a bit of common sense would consider writing.
-        Curiously enough, sometimes, perl is not so strict, as this works
+
+        Curiously enough, sometimes perl is not so strict, as this works
         even with "use strict" in scope:
 
            for (@{ $var->[0] }) { ...
 
-        If that isnt hipocrasy! And all that from a mere program!
+        If that isn't hipocrasy! And all that from a mere program!
 
     use feature qw(say state given)
         We found it annoying that we always have to enable extra features.
         If something breaks because it didn't anticipate future changes, so
         be it. 5.10 broke almost all our XS modules and nobody cared either
-        - and few modules that are no longer maintained work with newer
-        versions of Perl, regardless of use feature.
+        (or at leats I know of nobody who really complained about gratitious
+        changes - as opposed to bugs).
 
-        If your code isn't alive, it's dead, jim.
+        Few modules that are not actively maintained work with newer
+        versions of Perl, regardless of use feature or not, so a new major
+        perl release means changes to many modules - new keywords are just
+        the tip of the iceberg.
 
-    much less memory
-        Just using all those pragmas together waste <blink>*776
-        kilobytes*</blink> of precious memory in my perl, for *every single
-        perl process using our code*, which on our machines, is a lot. In
-        comparison, this module only uses *four* kilobytes (I even had to
-        write it out so it looks like more) of memory on the same platform.
+        If your code isn't alive, it's dead, jim - be an active maintainer.
+
+    mucho reduced memory usage
+        Just using all those pragmas mentioned in the SYNOPSIS together
+        wastes <blink>*776 kilobytes*</blink> of precious memory in my perl,
+        for *every single perl process using our code*, which on our
+        machines, is a lot. In comparison, this module only uses *four*
+        kilobytes (I even had to write it out so it looks like more) of
+        memory on the same platform.
 
         The money/time/effort/electricity invested in these gigabytes
         (probably petabytes globally!) of wasted memory could easily save 42
         trees, and a kitten!
+
+        Unfortunately, until everybods applies more common sense, there will
+        still often be modules that pull in the monster pragmas. But one can
+        hope...
 
 THERE IS NO 'no common::sense'!!!! !!!! !!
     This module doesn't offer an unimport. First of all, it wastes even more
@@ -93,9 +108,23 @@ STABILITY AND FUTURE VERSIONS
     try to emulate "say" or so with perls older than 5.10 (this module, of
     course, should work with older perl versions - supporting 5.8 for
     example is just common sense at this time. Maybe not in the future, but
-    of course you can trust our common sense).
+    of course you can trust our common sense to be consistent with, uhm, our
+    opinion).
 
-WHAT OTHER PEOPLE HAVE TO SAY ABOUT THIS MODULE
+WHAT OTHER PEOPLE HAD TO SAY ABOUT THIS MODULE
+    apeiron
+
+       "... wow"
+       "I hope common::sense is a joke."
+
+    crab
+
+       "i wonder how it would be if joerg schilling wrote perl modules."
+
+    H.Merijn Brand
+
+       "Just one more reason to drop JSON::XS from my distribution list"
+
     Pista Palo
 
        "Something in short supply these days..."
@@ -132,10 +161,6 @@ WHAT OTHER PEOPLE HAVE TO SAY ABOUT THIS MODULE
     acme
 
        "THERE IS NO 'no common::sense'!!!! !!!! !!"
-
-    crab
-
-       "i wonder how it would be if joerg schilling wrote perl modules."
 
 AUTHOR
      Marc Lehmann <schmorp@schmorp.de>

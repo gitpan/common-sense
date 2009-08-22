@@ -1,5 +1,11 @@
 Revision history for perl pragma common::sense.
 
+1.0   Sat Aug 22 22:08:50 CEST 2009
+	- no functional changes.
+	- really, the first version of common sense!
+        - slightly improved documentation.
+	- forgot to include license.
+
 0.04  Sun Aug  2 10:29:23 CEST 2009
 	- added "what others..." section.
         - reinforce attempt at world domination.
