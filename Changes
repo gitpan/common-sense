@@ -1,5 +1,12 @@
 Revision history for perl pragma common::sense.
 
+2.0   Tue Sep  1 20:28:25 CEST 2009
+	- codename "fatality", now with big doses of... fatality.
+	- enabled an enourmous number of warnings and made them FATAL,
+          as warned about in earlier releases. Of course we carefully
+          tested the new warnings against our modules, as mentioned
+          in the manpage, too.
+
 1.0   Sat Aug 22 22:08:50 CEST 2009
 	- no functional changes.
 	- really, the first version of common sense!

@@ -11,33 +11,19 @@ common::sense - save a tree AND a kitten, use common::sense!
  # use strict qw(vars subs);
  # use feature qw(say state switch);
  # no warnings;
+ # use warnings qw(FATAL closed threads internal debugging pack substr malloc
+ #                 unopened portable prototype inplace io pipe unpack regexp
+ #                 deprecated exiting glob digit printf utf8 layer
+ #                 reserved parenthesis taint closure semicolon);
+ # no warnings qw(exec newline);
 
 =head1 DESCRIPTION
 
 This module implements some sane defaults for Perl programs, as defined by
-two typical (or not so typical - use your common sense) specimens of
-Perl coders.
+two typical (or not so typical - use your common sense) specimens of Perl
+coders.
 
 =over 4
-
-=item no warnings
-
-Ah, the dreaded warnings. Even worse, the horribly dreaded C<-w>
-switch: Even though we don't care if other people use warnings (and
-certainly there are useful ones), a lot of warnings simply go against the
-spirit of Perl.
-
-Most prominently, the warnings related to C<undef>. There is nothing wrong
-with C<undef>: it has well-defined semantics, it is useful, and spitting
-out warnings you never asked for is just evil.
-
-So every module needs C<no warnings> to avoid somebody accidentally using
-C<-w> and forcing his bad standards on our code. No will do. Really, the
-C<-w> switch should only enable wanrings for the main program.
-
-Funnily enough, L<perllexwarn> explicitly mentions C<-w> (and not in a
-favourable way), but standard utilities, such as L<prove>, or MakeMaker
-when running C<make test> enable them blindly.
 
 =item use strict qw(subs vars)
 
@@ -67,21 +53,74 @@ C<use strict> in scope:
 
    for (@{ $var->[0] }) { ...
 
-If that isn't hipocrasy! And all that from a mere program!
+If that isn't hypocrisy! And all that from a mere program!
+
 
 =item use feature qw(say state given)
 
 We found it annoying that we always have to enable extra features. If
 something breaks because it didn't anticipate future changes, so be
 it. 5.10 broke almost all our XS modules and nobody cared either (or at
-leats I know of nobody who really complained about gratitious changes - as
-opposed to bugs).
+least I know of nobody who really complained about gratuitous changes -
+as opposed to bugs).
 
 Few modules that are not actively maintained work with newer versions of
 Perl, regardless of use feature or not, so a new major perl release means
 changes to many modules - new keywords are just the tip of the iceberg.
 
-If your code isn't alive, it's dead, jim - be an active maintainer.
+If your code isn't alive, it's dead, Jim - be an active maintainer.
+
+
+=item no warnings, but a lot of new errors
+
+Ah, the dreaded warnings. Even worse, the horribly dreaded C<-w>
+switch: Even though we don't care if other people use warnings (and
+certainly there are useful ones), a lot of warnings simply go against the
+spirit of Perl.
+
+Most prominently, the warnings related to C<undef>. There is nothing wrong
+with C<undef>: it has well-defined semantics, it is useful, and spitting
+out warnings you never asked for is just evil.
+
+The result was that every one of our modules did C<no warnings> in the
+past, to avoid somebody accidentally using and forcing his bad standards
+on our code. Of course, this switched off all warnings, even the useful
+ones. Not a good situation. Really, the C<-w> switch should only enable
+warnings for the main program only.
+
+Funnily enough, L<perllexwarn> explicitly mentions C<-w> (and not in a
+favourable way, calling it outright "wrong"), but standard utilities, such
+as L<prove>, or MakeMaker when running C<make test>, still enable them
+blindly.
+
+For version 2 of common::sense, we finally sat down a few hours and went
+through I<every single warning message>, identifiying - according to
+common sense - all the useful ones.
+
+This resulted in the rather impressive list in the SYNOPSIS. When we
+weren't sure, we didn't include the warning, so the list might grow in
+the future (we might have made a mistake, too, so the list might shrink
+as well).
+
+Note the presence of C<FATAL> in the list: we do not think that the
+conditions caught by these warnings are worthy of a warning, we I<insist>
+that they are worthy of I<stopping> your program, I<instantly>. They are
+I<bugs>!
+
+Therefore we consider C<common::sense> to be much stricter than C<use
+warnings>, which is good if you are into strict things (we are not,
+actually, but these things tend to be subjective).
+
+After deciding on the list, we ran the module against all of our code that
+uses C<common::sense> (that is almost all of our code), and found only one
+occurence where one of them caused a problem: one of elmex's (unreleased)
+modules contained:
+
+   $fmt =~ s/([^\s\[]*)\[( [^\]]* )\]/\x0$1\x1$2\x0/xgo;
+
+We quickly agreed that indeed the code should be changed, even though it
+happened to do the right thing when the warning was switched off.
+
 
 =item mucho reduced memory usage
 
@@ -102,11 +141,22 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '1.0';
+our $VERSION = '2.0';
+
+# paste this into pelr to find bitmask
+
+# no warnings;
+# use warnings qw(FATAL closed threads internal debugging pack substr malloc unopened portable prototype
+#                 inplace io pipe unpack regexp deprecated exiting glob digit printf
+#                 utf8 layer reserved parenthesis taint closure semicolon);
+# no warnings qw(exec newline);
+# BEGIN { warn join "", map "\\x$_", unpack "(H2)*", ${^WARNING_BITS}; exit 0 };
+
+# overload should be included
 
 sub import {
-   # no warnings
-   ${^WARNING_BITS} ^= ${^WARNING_BITS};
+   # verified with perl 5.8.0, 5.10.0
+   ${^WARNING_BITS} = "\xfc\x3f\xf3\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x03";
 
    # use strict vars subs
    $^H |= 0x00000600;
@@ -132,14 +182,14 @@ would want no common sense?
 Future versions might change just about everything in this module. We
 might test our modules and upload new ones working with newer versions of
 this module, and leave you standing in the rain because we didn't tell
-you.
+you. In fact, we did so when switching from 1.0 to 2.0, which enabled gobs
+of warnings, and made them FATAL on top.
 
-Most likely, we will pick a few useful warnings, instead of just disabling
-all of them. And maybe we will load some nifty modules that try to emulate
-C<say> or so with perls older than 5.10 (this module, of course, should
-work with older perl versions - supporting 5.8 for example is just common
-sense at this time. Maybe not in the future, but of course you can trust
-our common sense to be consistent with, uhm, our opinion).
+Maybe we will load some nifty modules that try to emulate C<say> or so
+with perls older than 5.10 (this module, of course, should work with older
+perl versions - supporting 5.8 for example is just common sense at this
+time. Maybe not in the future, but of course you can trust our common
+sense to be consistent with, uhm, our opinion).
 
 =head1 WHAT OTHER PEOPLE HAD TO SAY ABOUT THIS MODULE
 
@@ -192,6 +242,10 @@ Jerad Pierce
 acme
 
    "THERE IS NO 'no common::sense'!!!! !!!! !!"
+
+apeiron (meta-comment about us commenting^Wquoting his comment)
+
+   How about quoting this: get a clue, you fucktarded amoeba.
 
 =head1 AUTHOR
 
