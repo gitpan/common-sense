@@ -1,5 +1,9 @@
 Revision history for perl pragma common::sense.
 
+2.01  Mon Oct  5 17:01:48 CEST 2009
+	- add a FAQ section.
+	- use a more future-proof way to set the warning mask.
+
 2.0   Tue Sep  1 20:28:25 CEST 2009
 	- codename "fatality", now with big doses of... fatality.
 	- enabled an enourmous number of warnings and made them FATAL,
