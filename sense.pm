@@ -21,7 +21,32 @@ common::sense - save a tree AND a kitten, use common::sense!
 
 This module implements some sane defaults for Perl programs, as defined by
 two typical (or not so typical - use your common sense) specimens of Perl
-coders.
+coders. In fact, after working out details on which warnings and strict
+modes to enable and make fatal, we found that we (and our code written so
+far, and others) fully agree on every option, even though we never used
+warnings before, so it seems this module indeed reflects a "common" sense
+among some long-time Perl coders.
+
+The basic philosophy behind the choices made in common::sense can be
+summarised as: "enforcing strict policies to catch as many bugs as
+possible, while at the same time, not limiting the expressive power
+available to the programmer".
+
+Two typical examples of this philosophy are uninitialised and malloc
+warnings:
+
+C<undef> is a well-defined feature of perl, and enabling warnings for
+using it rarely catches any bugs, but considerably limits you in what you
+can do, so uninitialised warnings are disabled.
+
+Freeing something twice on the C level is a serious bug, usually causing
+memory corruption. It often leads to side effects much later in the
+program and there are no advantages to not reporting this, so malloc
+warnings are fatal by default.
+
+What follows is a more thorough discussion of what this module does,
+and why it does it, and what the advantages (and disadvantages) of this
+approach are.
 
 =over 4
 
@@ -69,6 +94,12 @@ Perl, regardless of use feature or not, so a new major perl release means
 changes to many modules - new keywords are just the tip of the iceberg.
 
 If your code isn't alive, it's dead, Jim - be an active maintainer.
+
+But nobody forces you to use those extra features in modules meant for
+older versions of perl - common::sense of course works there as well.
+There is also an important other mode where having additional features by
+default is useful: commandline hacks and internal use scripts: See "much
+reduced typing", below.
 
 
 =item no warnings, but a lot of new errors
@@ -122,6 +153,24 @@ We quickly agreed that indeed the code should be changed, even though it
 happened to do the right thing when the warning was switched off.
 
 
+=item much reduced typing
+
+Especially with version 2.0 of common::sense, the amount of boilerplate
+code you need to add to gte I<this> policy is daunting. Nobody would write
+this out in throwaway scripts, commandline hacks or in quick internal-use
+scripts.
+
+By using common::sense you get a defined set of policies (ours, but maybe
+yours, too, if you accept them), and they are easy to apply to your
+scripts: typing C<use common::sense;> is even shorter than C<use warnings;
+use strict; use feature ...>.
+
+And you can immediately use the features of your installed perl, which
+is more difficult in code you release, but not usually an issue for
+internal-use code (downgrades of your production perl should be rare,
+right?).
+
+
 =item mucho reduced memory usage
 
 Just using all those pragmas mentioned in the SYNOPSIS together wastes
@@ -141,7 +190,7 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '2.01';
+our $VERSION = '2.02';
 
 # paste this into perl to find bitmask
 
@@ -253,6 +302,11 @@ apeiron (meta-comment about us commenting^Wquoting his comment)
 
    How about quoting this: get a clue, you fucktarded amoeba.
 
+quanth
+
+   common sense is beautiful, json::xs is fast, Anyevent, EV are fast and
+   furious. I love mlehmannware ;)
+
 =head1 FREQUQNTLY ASKED QUESTIONS
 
 Or frequently-come-up confusions.
@@ -296,11 +350,14 @@ why do you disable them?
 Well, we don't do this either - we selectively disagree with the
 usefulness of some warnings over others. This module is aimed at
 experienced Perl programmers, not people migrating from other languages
-who might be surprised about stuff such as C<undef>.
+who might be surprised about stuff such as C<undef>. On the other hand,
+this does not exclude the usefulness of this module for total newbies, due
+to its strictness in enforcing policy, while at the same time not limiting
+the expresive power of perl.
 
-In fact, this module is considerably I<more> strict than the canonical
-C<use strict; use warnings>, as it makes all warnings fatal in nature, so
-you can get away with as many things as with the canonical approach.
+This module is considerably I<more> strict than the canonical C<use
+strict; use warnings>, as it makes all its warnings fatal in nature, so
+you can not get away with as many things as with the canonical approach.
 
 This was not implemented in version 1.0 because of the daunting number
 of warning categories and the difficulty in getting exactly the set of
@@ -322,6 +379,16 @@ It's a fact, yeah. But it's trivial to install, most popular modules have
 many more dependencies and we consider dependencies a good thing - it
 leads to better APIs, more thought about interworking of modules and so
 on.
+
+=item Why do you use JSON and not YAML for your META.yml?
+
+This is not true - YAML supports a large subset of JSON, and this subset
+is what META.yml is written in, so it would be correct to say "the
+META.yml is written in a common subset of YAML and JSON".
+
+The META.yml follows the YAML, JSON and META.yml specifications, and is
+correctly parsed by CPAN, so if you have trouble with it, the problem is
+likely on your side.
 
 =item But! But!
 

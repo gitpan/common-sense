@@ -1,5 +1,13 @@
 Revision history for perl pragma common::sense.
 
+2.02  Wed Nov  4 12:04:08 CET 2009
+	- no functional changes.
+	- add META.yml clarification to the faq, tune the docs a bit
+          and add a "much reduced typing" section.
+        - unfortunately, the tone of the manpage has tightened and is
+          more serious in many parts now. We consider this a bug that we
+          plan to fix before 2100.
+
 2.01  Mon Oct  5 17:01:48 CEST 2009
 	- add a FAQ section.
 	- use a more future-proof way to set the warning mask.

@@ -11,7 +11,7 @@
    },
    "generated_by" : "ExtUtils::MakeMaker version 6.54",
    "distribution_type" : "module",
-   "version" : "2.01",
+   "version" : "2.02",
    "name" : "common-sense",
    "author" : [],
    "license" : "unknown",
