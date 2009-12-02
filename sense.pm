@@ -12,10 +12,10 @@ common::sense - save a tree AND a kitten, use common::sense!
  # use feature qw(say state switch);
  # no warnings;
  # use warnings qw(FATAL closed threads internal debugging pack substr malloc
- #                 unopened portable prototype inplace io pipe unpack regexp
+ #                 portable prototype inplace io pipe unpack regexp
  #                 deprecated exiting glob digit printf utf8 layer
  #                 reserved parenthesis taint closure semicolon);
- # no warnings qw(exec newline);
+ # no warnings qw(exec newline unopened);
 
 =head1 DESCRIPTION
 
@@ -190,22 +190,22 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '2.02';
+our $VERSION = '2.03';
 
 # paste this into perl to find bitmask
 
 # no warnings;
-# use warnings qw(FATAL closed threads internal debugging pack substr malloc unopened portable prototype
+# use warnings qw(FATAL closed threads internal debugging pack substr malloc portable prototype
 #                 inplace io pipe unpack regexp deprecated exiting glob digit printf
 #                 utf8 layer reserved parenthesis taint closure semicolon);
-# no warnings qw(exec newline);
+# no warnings qw(exec newline unopened);
 # BEGIN { warn join "", map "\\x$_", unpack "(H2)*", ${^WARNING_BITS}; exit 0 };
 
 # overload should be included
 
 sub import {
    # verified with perl 5.8.0, 5.10.0
-   ${^WARNING_BITS} ^= ${^WARNING_BITS} ^ "\xfc\x3f\xf3\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x03";
+   ${^WARNING_BITS} ^= ${^WARNING_BITS} ^ "\xfc\x3f\x33\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x03";
 
    # use strict vars subs
    $^H |= 0x00000600;
@@ -283,6 +283,10 @@ Somni
    "I swear he tacked somenoe else's name onto the module
    just so he could use the royal 'we' in the documentation"
 
+Anonymous Monk
+
+   "You just gotta love this thing, its got META.json!!!"
+
 dngor
 
    "Heh.  '"<elmex at ta-sa.org>"'  The quotes are semantic
@@ -300,12 +304,12 @@ acme
 
 apeiron (meta-comment about us commenting^Wquoting his comment)
 
-   How about quoting this: get a clue, you fucktarded amoeba.
+   "How about quoting this: get a clue, you fucktarded amoeba."
 
 quanth
 
-   common sense is beautiful, json::xs is fast, Anyevent, EV are fast and
-   furious. I love mlehmannware ;)
+   "common sense is beautiful, json::xs is fast, Anyevent, EV are fast and
+   furious. I love mlehmannware ;)"
 
 =head1 FREQUQNTLY ASKED QUESTIONS
 

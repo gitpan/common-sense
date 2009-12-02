@@ -1,5 +1,10 @@
 Revision history for perl pragma common::sense.
 
+2.03  Wed Dec  2 18:38:53 CET 2009
+	- removed "unopened" warning category, as this breaks "stat _", which
+          seems to be a bug in all perl versions (see perlbug #71002).
+        - some doc updates.
+
 2.02  Wed Nov  4 12:04:08 CET 2009
 	- no functional changes.
 	- add META.yml clarification to the faq, tune the docs a bit
