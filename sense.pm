@@ -8,12 +8,13 @@ common::sense - save a tree AND a kitten, use common::sense!
 
  # supposed to be the same, with much lower memory usage, as:
  #
+ # use utf8;
  # use strict qw(vars subs);
  # use feature qw(say state switch);
  # no warnings;
  # use warnings qw(FATAL closed threads internal debugging pack substr malloc
  #                 portable prototype inplace io pipe unpack regexp
- #                 deprecated exiting glob digit printf utf8 layer
+ #                 deprecated exiting glob digit printf layer
  #                 reserved parenthesis taint closure semicolon);
  # no warnings qw(exec newline unopened);
 
@@ -49,6 +50,18 @@ and why it does it, and what the advantages (and disadvantages) of this
 approach are.
 
 =over 4
+
+=item use utf8
+
+While it's not common sense to write your programs in UTF-8, it's quickly
+becoming the most common encoding, and the most convenient encoding
+available (you can do really nice quoting tricks...). Experience has shown
+that our programs were either all pure ascii or utf-8, both of which will
+stay the same.
+
+There are few drawbacks to enabling UTF-8 source code by default (mainly
+some speed hits due to bugs in older versions of perl), so this module
+enables UTF-8 source code encoding by default.
 
 =item use strict qw(subs vars)
 
@@ -190,14 +203,14 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '2.03';
+our $VERSION = '3.0';
 
 # paste this into perl to find bitmask
 
 # no warnings;
 # use warnings qw(FATAL closed threads internal debugging pack substr malloc portable prototype
 #                 inplace io pipe unpack regexp deprecated exiting glob digit printf
-#                 utf8 layer reserved parenthesis taint closure semicolon);
+#                 layer reserved parenthesis taint closure semicolon);
 # no warnings qw(exec newline unopened);
 # BEGIN { warn join "", map "\\x$_", unpack "(H2)*", ${^WARNING_BITS}; exit 0 };
 
@@ -205,10 +218,10 @@ our $VERSION = '2.03';
 
 sub import {
    # verified with perl 5.8.0, 5.10.0
-   ${^WARNING_BITS} ^= ${^WARNING_BITS} ^ "\xfc\x3f\x33\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x03";
+   ${^WARNING_BITS} ^= ${^WARNING_BITS} ^ "\xfc\x3f\x33\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x00";
 
-   # use strict vars subs
-   $^H |= 0x00000600;
+   # use utf8, strict vars subs
+   $^H |= 0x00800600;
 
    # use feature
    $^H{feature_switch} =

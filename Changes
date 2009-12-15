@@ -1,5 +1,13 @@
 Revision history for perl pragma common::sense.
 
+3.0  Tue Dec 15 03:24:28 CET 2009
+	- enable "use utf8" effect by default.
+	- removed "utf8" warning category. while this contains useful security
+          stuff, it also makes implementing security stuff almost impossible,
+          as it completely mangles perls internal utf8 encoding with actual
+          utf-8 encoding, and confuses "unicode", "string codepoints" and
+          "utf-8" so much that it becoems practically unusable.
+
 2.03  Wed Dec  2 18:38:53 CET 2009
 	- removed "unopened" warning category, as this breaks "stat _", which
           seems to be a bug in all perl versions (see perlbug #71002).

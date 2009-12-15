@@ -6,12 +6,13 @@ SYNOPSIS
 
      # supposed to be the same, with much lower memory usage, as:
      #
+     # use utf8;
      # use strict qw(vars subs);
      # use feature qw(say state switch);
      # no warnings;
      # use warnings qw(FATAL closed threads internal debugging pack substr malloc
      #                 portable prototype inplace io pipe unpack regexp
-     #                 deprecated exiting glob digit printf utf8 layer
+     #                 deprecated exiting glob digit printf layer
      #                 reserved parenthesis taint closure semicolon);
      # no warnings qw(exec newline unopened);
 
@@ -44,6 +45,17 @@ DESCRIPTION
     What follows is a more thorough discussion of what this module does, and
     why it does it, and what the advantages (and disadvantages) of this
     approach are.
+
+    use utf8
+        While it's not common sense to write your programs in UTF-8, it's
+        quickly becoming the most common encoding, and the most convenient
+        encoding available (you can do really nice quoting tricks...).
+        Experience has shown that our programs were either all pure ascii or
+        utf-8, both of which will stay the same.
+
+        There are few drawbacks to enabling UTF-8 source code by default
+        (mainly some speed hits due to bugs in older versions of perl), so
+        this module enables UTF-8 source code encoding by default.
 
     use strict qw(subs vars)
         Using "use strict" is definitely common sense, but "use strict
