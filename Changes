@@ -1,5 +1,14 @@
 Revision history for perl pragma common::sense.
 
+3.1  Sat Apr  3 04:56:36 CEST 2010
+        - removed "parenthesis" warning:
+             sysread $fh, my $buf, -s $fh; # ok
+             sysread $fh, my $buf, $size;  # warning
+          Made no sense to me, especially as $size is in scope.
+	- no longer hardcode warning/struct bits, calculate them at
+          installation time, for when I will no longer be alive etc.
+	- tweaked documentation.
+
 3.0  Tue Dec 15 03:24:28 CET 2009
 	- enable "use utf8" effect by default.
 	- removed "utf8" warning category. while this contains useful security

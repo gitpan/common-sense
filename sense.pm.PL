@@ -1,3 +1,47 @@
+#! perl
+
+open STDOUT, ">$ARGV[0]~"
+   or die "$ARGV[0]~: $!";
+
+our $WARN;
+our $H;
+
+BEGIN {
+   $H    = $^H;
+   $WARN = ${^WARNING_BITS};
+}
+
+use utf8;
+use strict qw(subs vars);
+
+no warnings;
+use warnings qw(FATAL closed threads internal debugging pack substr malloc portable prototype
+                inplace io pipe unpack regexp deprecated exiting glob digit printf
+                layer reserved taint closure semicolon);
+no warnings qw(exec newline unopened);
+
+BEGIN {
+   $H    = $^H              & ~$H;
+   $WARN = ${^WARNING_BITS} & ~$WARN;
+}
+
+while (<DATA>) {
+   if (/^IMPORT/) {
+      print "   # use warnings\n";
+      printf "   \${^WARNING_BITS} ^= \${^WARNING_BITS} ^ \"%s\";\n",
+             join "", map "\\x$_", unpack "(H2)*", $WARN;
+      print "   # use strict, use utf8;\n";
+      printf "   \$^H |= 0x%x;\n", $H;
+   } else {
+      print;
+   }
+}
+
+close STDOUT;
+rename "$ARGV[0]~", $ARGV[0];
+
+__DATA__
+
 =head1 NAME
 
 common::sense - save a tree AND a kitten, use common::sense!
@@ -15,7 +59,7 @@ common::sense - save a tree AND a kitten, use common::sense!
  # use warnings qw(FATAL closed threads internal debugging pack substr malloc
  #                 portable prototype inplace io pipe unpack regexp
  #                 deprecated exiting glob digit printf layer
- #                 reserved parenthesis taint closure semicolon);
+ #                 reserved taint closure semicolon);
  # no warnings qw(exec newline unopened);
 
 =head1 DESCRIPTION
@@ -33,35 +77,47 @@ summarised as: "enforcing strict policies to catch as many bugs as
 possible, while at the same time, not limiting the expressive power
 available to the programmer".
 
-Two typical examples of this philosophy are uninitialised and malloc
-warnings:
+Two typical examples of how this philosophy is applied in practise is the
+handling of uninitialised and malloc warnings:
+
+=over 4
+
+=item I<uninitialised>
 
 C<undef> is a well-defined feature of perl, and enabling warnings for
 using it rarely catches any bugs, but considerably limits you in what you
 can do, so uninitialised warnings are disabled.
+
+=item I<malloc>
 
 Freeing something twice on the C level is a serious bug, usually causing
 memory corruption. It often leads to side effects much later in the
 program and there are no advantages to not reporting this, so malloc
 warnings are fatal by default.
 
+=back
+
 What follows is a more thorough discussion of what this module does,
 and why it does it, and what the advantages (and disadvantages) of this
 approach are.
+
+=head1 RATIONALE
 
 =over 4
 
 =item use utf8
 
 While it's not common sense to write your programs in UTF-8, it's quickly
-becoming the most common encoding, and the most convenient encoding
-available (you can do really nice quoting tricks...). Experience has shown
-that our programs were either all pure ascii or utf-8, both of which will
-stay the same.
+becoming the most common encoding, is the designated future default
+encoding for perl sources, and the most convenient encoding available
+(you can do really nice quoting tricks...). Experience has shown that our
+programs were either all pure ascii or utf-8, both of which will stay the
+same.
 
 There are few drawbacks to enabling UTF-8 source code by default (mainly
 some speed hits due to bugs in older versions of perl), so this module
 enables UTF-8 source code encoding by default.
+
 
 =item use strict qw(subs vars)
 
@@ -203,26 +259,12 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '3.0';
-
-# paste this into perl to find bitmask
-
-# no warnings;
-# use warnings qw(FATAL closed threads internal debugging pack substr malloc portable prototype
-#                 inplace io pipe unpack regexp deprecated exiting glob digit printf
-#                 layer reserved parenthesis taint closure semicolon);
-# no warnings qw(exec newline unopened);
-# BEGIN { warn join "", map "\\x$_", unpack "(H2)*", ${^WARNING_BITS}; exit 0 };
+our $VERSION = '3.1';
 
 # overload should be included
 
 sub import {
-   # verified with perl 5.8.0, 5.10.0
-   ${^WARNING_BITS} ^= ${^WARNING_BITS} ^ "\xfc\x3f\x33\x00\x0f\xf3\xcf\xc0\xf3\xfc\x33\x00";
-
-   # use utf8, strict vars subs
-   $^H |= 0x00800600;
-
+IMPORT
    # use feature
    $^H{feature_switch} =
    $^H{feature_say}    =
@@ -324,7 +366,23 @@ quanth
    "common sense is beautiful, json::xs is fast, Anyevent, EV are fast and
    furious. I love mlehmannware ;)"
 
-=head1 FREQUQNTLY ASKED QUESTIONS
+apeiron
+
+   "... it's mlehmann's view of what common sense is. His view of common
+   sense is certainly uncommon, insofar as anyone with a clue disagrees
+   with him."
+
+apeiron (another meta-comment)
+
+   "apeiron wonders if his little informant is here to steal more quotes"
+
+ew73
+
+   "... I never got past the SYNOPSIS before calling it shit."
+   [...]
+   How come no one ever quotes me. :("
+
+=head1 FREQUENTLY ASKED QUESTIONS
 
 Or frequently-come-up confusions.
 
@@ -350,7 +408,7 @@ explains boring rationale.
 
 For some reason people keep thinking that C<common::sense> imposes
 process-wide limits, even though the SYNOPSIS makes it clear that it works
-like other similar modules - only on the scope that uses them.
+like other similar modules - i.e. only within the scope that C<use>s them.
 
 So, no, we don't - nobody is forced to use this module, and using a module
 that relies on common::sense does not impose anything on you.
@@ -385,7 +443,7 @@ every module, the maintainance effort would be enourmous).
 =item But many modules C<use strict> or C<use warnings>, so the memory
 savings do not apply?
 
-I am suddenly so sad.
+I suddenly feel sad...
 
 But yes, that's true. Fortunately C<common::sense> still uses only a
 miniscule amount of RAM.

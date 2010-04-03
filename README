@@ -13,7 +13,7 @@ SYNOPSIS
      # use warnings qw(FATAL closed threads internal debugging pack substr malloc
      #                 portable prototype inplace io pipe unpack regexp
      #                 deprecated exiting glob digit printf layer
-     #                 reserved parenthesis taint closure semicolon);
+     #                 reserved taint closure semicolon);
      # no warnings qw(exec newline unopened);
 
 DESCRIPTION
@@ -30,28 +30,32 @@ DESCRIPTION
     possible, while at the same time, not limiting the expressive power
     available to the programmer".
 
-    Two typical examples of this philosophy are uninitialised and malloc
-    warnings:
+    Two typical examples of how this philosophy is applied in practise is
+    the handling of uninitialised and malloc warnings:
 
-    "undef" is a well-defined feature of perl, and enabling warnings for
-    using it rarely catches any bugs, but considerably limits you in what
-    you can do, so uninitialised warnings are disabled.
+    *uninitialised*
+        "undef" is a well-defined feature of perl, and enabling warnings for
+        using it rarely catches any bugs, but considerably limits you in
+        what you can do, so uninitialised warnings are disabled.
 
-    Freeing something twice on the C level is a serious bug, usually causing
-    memory corruption. It often leads to side effects much later in the
-    program and there are no advantages to not reporting this, so malloc
-    warnings are fatal by default.
+    *malloc*
+        Freeing something twice on the C level is a serious bug, usually
+        causing memory corruption. It often leads to side effects much later
+        in the program and there are no advantages to not reporting this, so
+        malloc warnings are fatal by default.
 
     What follows is a more thorough discussion of what this module does, and
     why it does it, and what the advantages (and disadvantages) of this
     approach are.
 
+RATIONALE
     use utf8
         While it's not common sense to write your programs in UTF-8, it's
-        quickly becoming the most common encoding, and the most convenient
-        encoding available (you can do really nice quoting tricks...).
-        Experience has shown that our programs were either all pure ascii or
-        utf-8, both of which will stay the same.
+        quickly becoming the most common encoding, is the designated future
+        default encoding for perl sources, and the most convenient encoding
+        available (you can do really nice quoting tricks...). Experience has
+        shown that our programs were either all pure ascii or utf-8, both of
+        which will stay the same.
 
         There are few drawbacks to enabling UTF-8 source code by default
         (mainly some speed hits due to bugs in older versions of perl), so
@@ -276,7 +280,23 @@ WHAT OTHER PEOPLE HAD TO SAY ABOUT THIS MODULE
        "common sense is beautiful, json::xs is fast, Anyevent, EV are fast and
        furious. I love mlehmannware ;)"
 
-FREQUQNTLY ASKED QUESTIONS
+    apeiron
+
+       "... it's mlehmann's view of what common sense is. His view of common
+       sense is certainly uncommon, insofar as anyone with a clue disagrees
+       with him."
+
+    apeiron (another meta-comment)
+
+       "apeiron wonders if his little informant is here to steal more quotes"
+
+    ew73
+
+       "... I never got past the SYNOPSIS before calling it shit."
+       [...]
+       How come no one ever quotes me. :("
+
+FREQUENTLY ASKED QUESTIONS
     Or frequently-come-up confusions.
 
     Is this module meant to be serious?
@@ -296,7 +316,8 @@ FREQUQNTLY ASKED QUESTIONS
     Why do you impose your conventions on my code?
         For some reason people keep thinking that "common::sense" imposes
         process-wide limits, even though the SYNOPSIS makes it clear that it
-        works like other similar modules - only on the scope that uses them.
+        works like other similar modules - i.e. only within the scope that
+        "use"s them.
 
         So, no, we don't - nobody is forced to use this module, and using a
         module that relies on common::sense does not impose anything on you.
@@ -330,7 +351,7 @@ FREQUQNTLY ASKED QUESTIONS
 
     But many modules "use strict" or "use warnings", so the memory savings
     do not apply?
-        I am suddenly so sad.
+        I suddenly feel sad...
 
         But yes, that's true. Fortunately "common::sense" still uses only a
         miniscule amount of RAM.

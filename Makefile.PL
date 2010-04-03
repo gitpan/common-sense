@@ -6,7 +6,9 @@ WriteMakefile(
 	            COMPRESS	=> 'gzip -9v',
 	            SUFFIX	=> '.gz',
 	           },
-    NAME => "common::sense",
-    VERSION_FROM => "sense.pm",
+    NAME        => "common::sense",
+    VERSION_FROM => "sense.pm.PL",
+    PM          => { "sense.pm" => '$(INST_LIB)/common/sense.pm' },
+    clean       => { FILES => "sense.pm" },
 );
 
