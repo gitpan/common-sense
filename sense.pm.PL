@@ -15,7 +15,7 @@ use utf8;
 use strict qw(subs vars);
 
 no warnings;
-use warnings qw(FATAL closed threads internal debugging pack substr malloc portable prototype
+use warnings qw(FATAL closed threads internal debugging pack malloc portable prototype
                 inplace io pipe unpack regexp deprecated exiting glob digit printf
                 layer reserved taint closure semicolon);
 no warnings qw(exec newline unopened);
@@ -56,7 +56,7 @@ common::sense - save a tree AND a kitten, use common::sense!
  # use strict qw(vars subs);
  # use feature qw(say state switch);
  # no warnings;
- # use warnings qw(FATAL closed threads internal debugging pack substr malloc
+ # use warnings qw(FATAL closed threads internal debugging pack malloc
  #                 portable prototype inplace io pipe unpack regexp
  #                 deprecated exiting glob digit printf layer
  #                 reserved taint closure semicolon);
@@ -259,7 +259,7 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '3.1';
+our $VERSION = '3.2';
 
 # overload should be included
 
@@ -438,7 +438,7 @@ This was not implemented in version 1.0 because of the daunting number
 of warning categories and the difficulty in getting exactly the set of
 warnings you wish (i.e. look at the SYNOPSIS in how complicated it is to
 get a specific set of warnings - it is not reasonable to put this into
-every module, the maintainance effort would be enourmous).
+every module, the maintenance effort would be enourmous).
 
 =item But many modules C<use strict> or C<use warnings>, so the memory
 savings do not apply?

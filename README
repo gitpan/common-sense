@@ -10,7 +10,7 @@ SYNOPSIS
      # use strict qw(vars subs);
      # use feature qw(say state switch);
      # no warnings;
-     # use warnings qw(FATAL closed threads internal debugging pack substr malloc
+     # use warnings qw(FATAL closed threads internal debugging pack malloc
      #                 portable prototype inplace io pipe unpack regexp
      #                 deprecated exiting glob digit printf layer
      #                 reserved taint closure semicolon);
@@ -346,7 +346,7 @@ FREQUENTLY ASKED QUESTIONS
         number of warning categories and the difficulty in getting exactly
         the set of warnings you wish (i.e. look at the SYNOPSIS in how
         complicated it is to get a specific set of warnings - it is not
-        reasonable to put this into every module, the maintainance effort
+        reasonable to put this into every module, the maintenance effort
         would be enourmous).
 
     But many modules "use strict" or "use warnings", so the memory savings

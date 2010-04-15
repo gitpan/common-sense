@@ -1,5 +1,9 @@
 Revision history for perl pragma common::sense.
 
+3.2  Fri Apr 16 01:46:02 CEST 2010
+	- removed "substr" warning - while it overall is a good category,
+          "substr '', 2" is entirely sensible.
+
 3.1  Sat Apr  3 04:56:36 CEST 2010
         - removed "parenthesis" warning:
              sysread $fh, my $buf, -s $fh; # ok
