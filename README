@@ -12,11 +12,16 @@ SYNOPSIS
      # no warnings;
      # use warnings qw(FATAL closed threads internal debugging pack malloc
      #                 portable prototype inplace io pipe unpack regexp
-     #                 deprecated exiting glob digit printf layer
+     #                 deprecated glob digit printf layer
      #                 reserved taint closure semicolon);
      # no warnings qw(exec newline unopened);
 
 DESCRIPTION
+       “Nothing is more fairly distributed than common sense: no one thinks
+       he needs more of it than he already has.”
+
+       – René Descartes
+
     This module implements some sane defaults for Perl programs, as defined
     by two typical (or not so typical - use your common sense) specimens of
     Perl coders. In fact, after working out details on which warnings and

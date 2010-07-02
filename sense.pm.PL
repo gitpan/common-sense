@@ -16,7 +16,7 @@ use strict qw(subs vars);
 
 no warnings;
 use warnings qw(FATAL closed threads internal debugging pack malloc portable prototype
-                inplace io pipe unpack regexp deprecated exiting glob digit printf
+                inplace io pipe unpack regexp deprecated glob digit printf
                 layer reserved taint closure semicolon);
 no warnings qw(exec newline unopened);
 
@@ -58,11 +58,17 @@ common::sense - save a tree AND a kitten, use common::sense!
  # no warnings;
  # use warnings qw(FATAL closed threads internal debugging pack malloc
  #                 portable prototype inplace io pipe unpack regexp
- #                 deprecated exiting glob digit printf layer
+ #                 deprecated glob digit printf layer
  #                 reserved taint closure semicolon);
  # no warnings qw(exec newline unopened);
 
+
 =head1 DESCRIPTION
+
+   “Nothing is more fairly distributed than common sense: no one thinks
+   he needs more of it than he already has.”
+
+   – René Descartes
 
 This module implements some sane defaults for Perl programs, as defined by
 two typical (or not so typical - use your common sense) specimens of Perl
@@ -259,7 +265,7 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '3.2';
+our $VERSION = '3.3';
 
 # overload should be included
 
