@@ -10,8 +10,8 @@ SYNOPSIS
      # use strict qw(vars subs);
      # use feature qw(say state switch);
      # no warnings;
-     # use warnings qw(FATAL closed threads internal debugging pack malloc
-     #                 portable prototype inplace io pipe unpack regexp
+     # use warnings qw(FATAL closed threads internal debugging pack
+     #                 portable prototype inplace io pipe unpack malloc
      #                 deprecated glob digit printf layer
      #                 reserved taint closure semicolon);
      # no warnings qw(exec newline unopened);
@@ -48,6 +48,12 @@ DESCRIPTION
         causing memory corruption. It often leads to side effects much later
         in the program and there are no advantages to not reporting this, so
         malloc warnings are fatal by default.
+
+    Unfortunately, there is no fine-grained warning control in perl, so
+    often whole groups of useful warnings had to be excluded because of a
+    single useless warning (for example, perl puts an arbitrary limit on the
+    length of text you can match with some regexes before emitting a
+    warning, making the whole "regexp" category useless).
 
     What follows is a more thorough discussion of what this module does, and
     why it does it, and what the advantages (and disadvantages) of this
@@ -340,7 +346,7 @@ FREQUENTLY ASKED QUESTIONS
         languages who might be surprised about stuff such as "undef". On the
         other hand, this does not exclude the usefulness of this module for
         total newbies, due to its strictness in enforcing policy, while at
-        the same time not limiting the expresive power of perl.
+        the same time not limiting the expressive power of perl.
 
         This module is considerably *more* strict than the canonical "use
         strict; use warnings", as it makes all its warnings fatal in nature,
@@ -375,6 +381,10 @@ FREQUENTLY ASKED QUESTIONS
         The META.yml follows the YAML, JSON and META.yml specifications, and
         is correctly parsed by CPAN, so if you have trouble with it, the
         problem is likely on your side.
+
+        Update: Since it turned out that most YAML parsers can't, in fact,
+        parse YAML at all(!), CPAN decided to go with a separate file called
+        META.json, which is what "common::sense" is now doing.
 
     But! But!
         Yeah, we know.

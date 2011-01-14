@@ -1,4 +1,4 @@
-#! perl
+#! perl-000
 
 open STDOUT, ">$ARGV[0]~"
    or die "$ARGV[0]~: $!";
@@ -16,7 +16,7 @@ use strict qw(subs vars);
 
 no warnings;
 use warnings qw(FATAL closed threads internal debugging pack malloc portable prototype
-                inplace io pipe unpack regexp deprecated glob digit printf
+                inplace io pipe unpack deprecated glob digit printf
                 layer reserved taint closure semicolon);
 no warnings qw(exec newline unopened);
 
@@ -56,8 +56,8 @@ common::sense - save a tree AND a kitten, use common::sense!
  # use strict qw(vars subs);
  # use feature qw(say state switch);
  # no warnings;
- # use warnings qw(FATAL closed threads internal debugging pack malloc
- #                 portable prototype inplace io pipe unpack regexp
+ # use warnings qw(FATAL closed threads internal debugging pack
+ #                 portable prototype inplace io pipe unpack malloc
  #                 deprecated glob digit printf layer
  #                 reserved taint closure semicolon);
  # no warnings qw(exec newline unopened);
@@ -102,6 +102,12 @@ program and there are no advantages to not reporting this, so malloc
 warnings are fatal by default.
 
 =back
+
+Unfortunately, there is no fine-grained warning control in perl, so often
+whole groups of useful warnings had to be excluded because of a single
+useless warning (for example, perl puts an arbitrary limit on the length
+of text you can match with some regexes before emitting a warning, making
+the whole C<regexp> category useless).
 
 What follows is a more thorough discussion of what this module does,
 and why it does it, and what the advantages (and disadvantages) of this
@@ -265,7 +271,7 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '3.3';
+our $VERSION = '3.4';
 
 # overload should be included
 
@@ -434,7 +440,7 @@ experienced Perl programmers, not people migrating from other languages
 who might be surprised about stuff such as C<undef>. On the other hand,
 this does not exclude the usefulness of this module for total newbies, due
 to its strictness in enforcing policy, while at the same time not limiting
-the expresive power of perl.
+the expressive power of perl.
 
 This module is considerably I<more> strict than the canonical C<use
 strict; use warnings>, as it makes all its warnings fatal in nature, so

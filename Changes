@@ -1,5 +1,13 @@
 Revision history for perl pragma common::sense.
 
+3.4  Fri Jan 14 07:17:16 CET 2011
+	- remove "regexp" category. this is rather painful as it's a large
+          class, but unfortunately, somebody thought emitting a warning when you
+          match more than 32kb of text is in some way useful, which spoils the whole
+          category.
+        - use META.json instead of META.yml - apparently YAML parsers don't actually
+          exist.
+
 3.3  Fri Jul  2 22:40:14 CEST 2010
         - removed "exiting" category - this is too useful to create new
           control statements, and fails utterly with eval, as eval will
