@@ -1,5 +1,12 @@
 Revision history for perl pragma common::sense.
 
+3.5  Wed Mar  7 20:50:48 CET 2012
+        - localise $^W, as this causes warnings with 5.16 when some lost
+          soul uses -w. common::sense doesn't support $^W, but tries to
+          shield module authors and programs from its ill effects. If you
+          enable $^W, then you normally get to keep the pieces because you
+          change semantics of other people's code.
+
 3.4  Fri Jan 14 07:17:16 CET 2011
 	- remove "regexp" category. this is rather painful as it's a large
           class, but unfortunately, somebody thought emitting a warning when you
