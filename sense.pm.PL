@@ -5,6 +5,7 @@ open STDOUT, ">$ARGV[0]~"
 
 our $WARN;
 our $H;
+our %H;
 
 BEGIN {
    $H    = $^H;
@@ -13,6 +14,20 @@ BEGIN {
 
 use utf8;
 use strict qw(subs vars);
+
+BEGIN {
+   if ($] >= 5.010) {
+      require feature;
+      feature->import (qw(say state switch));
+   }
+   if ($] >= 5.012) {
+      feature->import (qw(unicode_strings));
+   }
+   if ($] >= 5.016) {
+      feature->import (qw(current_sub fc evalbytes));
+      feature->unimport (qw(array_base));
+   }
+}
 
 no warnings;
 use warnings qw(FATAL closed threads internal debugging pack malloc portable prototype
@@ -23,6 +38,7 @@ no warnings qw(exec newline unopened);
 BEGIN {
    $H    = $^H              & ~$H;
    $WARN = ${^WARNING_BITS} & ~$WARN;
+   %H    = %^H;
 }
 
 while (<DATA>) {
@@ -30,8 +46,12 @@ while (<DATA>) {
       print "   # use warnings\n";
       printf "   \${^WARNING_BITS} ^= \${^WARNING_BITS} ^ \"%s\";\n",
              join "", map "\\x$_", unpack "(H2)*", $WARN;
-      print "   # use strict, use utf8;\n";
+      print "   # use strict, use utf8; use feature;\n";
       printf "   \$^H |= 0x%x;\n", $H;
+
+      if (my @features = grep /^feature_/, keys %H) {
+         print "   \@^H{qw(@features)} = (1) x ", (scalar @features), ";\n";
+      }
    } else {
       print;
    }
@@ -48,20 +68,21 @@ common::sense - save a tree AND a kitten, use common::sense!
 
 =head1 SYNOPSIS
 
- use common::sense;
+   use common::sense;
 
- # supposed to be the same, with much lower memory usage, as:
- #
- # use utf8;
- # use strict qw(vars subs);
- # use feature qw(say state switch);
- # no warnings;
- # use warnings qw(FATAL closed threads internal debugging pack
- #                 portable prototype inplace io pipe unpack malloc
- #                 deprecated glob digit printf layer
- #                 reserved taint closure semicolon);
- # no warnings qw(exec newline unopened);
-
+   # Supposed to be mostly the same, with much lower memory usage, as:
+  
+   # use utf8;
+   # use strict qw(vars subs);
+   # use feature qw(say state switch);
+   # use feature qw(unicode_strings unicode_eval current_sub fc evalbytes);
+   # no feature qw(array_base);
+   # no warnings;
+   # use warnings qw(FATAL closed threads internal debugging pack
+   #                 portable prototype inplace io pipe unpack malloc
+   #                 deprecated glob digit printf layer
+   #                 reserved taint closure semicolon);
+   # no warnings qw(exec newline unopened);
 
 =head1 DESCRIPTION
 
@@ -162,7 +183,7 @@ C<use strict> in scope:
 If that isn't hypocrisy! And all that from a mere program!
 
 
-=item use feature qw(say state given)
+=item use feature qw(say state given ...)
 
 We found it annoying that we always have to enable extra features. If
 something breaks because it didn't anticipate future changes, so be
@@ -182,6 +203,12 @@ There is also an important other mode where having additional features by
 default is useful: commandline hacks and internal use scripts: See "much
 reduced typing", below.
 
+There is one notable exception: C<unicode_eval> is not enabled by
+default. In our opinion, C<use feature> had one main effect - newer perl
+versions don't value backwards compatibility and the ability to write
+modules for multiple perl versions much, after all, you can use feature.
+
+C<unicode_eval> doesn't add a new feature, it breaks an existing function.
 
 =item no warnings, but a lot of new errors
 
@@ -271,17 +298,13 @@ often be modules that pull in the monster pragmas. But one can hope...
 
 package common::sense;
 
-our $VERSION = '3.5';
+our $VERSION = '3.6';
 
 # overload should be included
 
 sub import {
-   local $^W; # work around perl 5.16 spewing out warnings for next line
+   local $^W; # work around perl 5.16 spewing out warnings for next statement
 IMPORT
-   # use feature
-   $^H{feature_switch} =
-   $^H{feature_say}    =
-   $^H{feature_state}  = 1;
 }
 
 1;

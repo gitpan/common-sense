@@ -2,19 +2,21 @@ NAME
     common::sense - save a tree AND a kitten, use common::sense!
 
 SYNOPSIS
-     use common::sense;
+       use common::sense;
 
-     # supposed to be the same, with much lower memory usage, as:
-     #
-     # use utf8;
-     # use strict qw(vars subs);
-     # use feature qw(say state switch);
-     # no warnings;
-     # use warnings qw(FATAL closed threads internal debugging pack
-     #                 portable prototype inplace io pipe unpack malloc
-     #                 deprecated glob digit printf layer
-     #                 reserved taint closure semicolon);
-     # no warnings qw(exec newline unopened);
+       # Supposed to be mostly the same, with much lower memory usage, as:
+  
+       # use utf8;
+       # use strict qw(vars subs);
+       # use feature qw(say state switch);
+       # use feature qw(unicode_strings unicode_eval current_sub fc evalbytes);
+       # no feature qw(array_base);
+       # no warnings;
+       # use warnings qw(FATAL closed threads internal debugging pack
+       #                 portable prototype inplace io pipe unpack malloc
+       #                 deprecated glob digit printf layer
+       #                 reserved taint closure semicolon);
+       # no warnings qw(exec newline unopened);
 
 DESCRIPTION
        “Nothing is more fairly distributed than common sense: no one thinks
@@ -101,7 +103,7 @@ RATIONALE
 
         If that isn't hypocrisy! And all that from a mere program!
 
-    use feature qw(say state given)
+    use feature qw(say state given ...)
         We found it annoying that we always have to enable extra features.
         If something breaks because it didn't anticipate future changes, so
         be it. 5.10 broke almost all our XS modules and nobody cared either
@@ -120,6 +122,15 @@ RATIONALE
         well. There is also an important other mode where having additional
         features by default is useful: commandline hacks and internal use
         scripts: See "much reduced typing", below.
+
+        There is one notable exception: "unicode_eval" is not enabled by
+        default. In our opinion, "use feature" had one main effect - newer
+        perl versions don't value backwards compatibility and the ability to
+        write modules for multiple perl versions much, after all, you can
+        use feature.
+
+        "unicode_eval" doesn't add a new feature, it breaks an existing
+        function.
 
     no warnings, but a lot of new errors
         Ah, the dreaded warnings. Even worse, the horribly dreaded "-w"

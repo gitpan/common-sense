@@ -1,5 +1,13 @@
 Revision history for perl pragma common::sense.
 
+TODO: make it arch-specific?
+
+3.6  Sun Jun 17 14:24:53 CEST 2012
+	- work around more 5.16 breakage - $^H doesn't work as nicely as
+          p5p make you to believe.
+        - add features: unicode_strings current_sub fc evalbytes.
+        - disable features: array_base.
+
 3.5  Wed Mar  7 20:50:48 CET 2012
         - localise $^W, as this causes warnings with 5.16 when some lost
           soul uses -w. common::sense doesn't support $^W, but tries to
