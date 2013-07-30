@@ -8,7 +8,10 @@ WriteMakefile(
 	           },
     NAME        => "common::sense",
     VERSION_FROM => "sense.pm.PL",
-    PM          => { "sense.pm" => '$(INST_LIB)/common/sense.pm' },
+    PM          => {
+       "sense.pm"  => '$(INST_ARCHLIBDIR)/common/sense.pm',
+       "sense.pod" => '$(INST_LIBDIR)/common/sense.pod',
+    },
     clean       => { FILES => "sense.pm" },
 );
 

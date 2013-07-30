@@ -1,6 +1,10 @@
 Revision history for perl pragma common::sense.
 
-TODO: make it arch-specific?
+3.7  Wed Jul 31 01:26:50 CEST 2013
+	- move pod to separate file, to further improve loading times.
+        - make it arch-specific, adding a test that warns when an old
+          version is still installed.
+	- due to a logic glitch, warnings were not enabled at all on 5.16.
 
 3.6  Sun Jun 17 14:24:53 CEST 2012
 	- work around more 5.16 breakage - $^H doesn't work as nicely as
