@@ -1,6 +1,6 @@
 #! perl-000
 
-our $VERSION = '3.71';
+our $VERSION = '3.72';
 
 open STDOUT, ">$ARGV[0]~"
    or die "$ARGV[0]~: $!";
