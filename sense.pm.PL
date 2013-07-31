@@ -1,5 +1,7 @@
 #! perl-000
 
+our $VERSION = '3.71';
+
 open STDOUT, ">$ARGV[0]~"
    or die "$ARGV[0]~: $!";
 
@@ -45,6 +47,8 @@ while (<DATA>) {
       if (my @features = grep /^feature_/, keys %H) {
          print "   \@^H{qw(@features)} = (1) x ", (scalar @features), ";\n";
       }
+   } elsif (/^VERSION/) {
+      print "our \$VERSION = $VERSION;\n";
    } else {
       print;
    }
@@ -56,7 +60,7 @@ rename "$ARGV[0]~", $ARGV[0];
 __DATA__
 package common::sense;
 
-our $VERSION = '3.7';
+VERSION
 
 # overload should be included
 

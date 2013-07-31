@@ -1,5 +1,9 @@
 Revision history for perl pragma common::sense.
 
+3.71 Wed Jul 31 02:34:48 CEST 2013
+	- CPAN failed to parse the version number in 3.7, try to work
+          around.
+
 3.7  Wed Jul 31 01:26:50 CEST 2013
 	- move pod to separate file, to further improve loading times.
         - make it arch-specific, adding a test that warns when an old
