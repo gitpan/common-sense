@@ -16,8 +16,8 @@ common::sense - save a tree AND a kitten, use common::sense!
    # no warnings;
    # use warnings qw(FATAL closed threads internal debugging pack
    #                 portable prototype inplace io pipe unpack malloc
-   #                 deprecated glob digit printf layer
-   #                 reserved taint closure semicolon);
+   #                 glob digit printf layer reserved taint closure
+   #                 semicolon);
    # no warnings qw(exec newline unopened);
 
 =head1 DESCRIPTION
@@ -414,7 +414,7 @@ miniscule amount of RAM.
 =item But it adds another dependency to your modules!
 
 It's a fact, yeah. But it's trivial to install, most popular modules have
-many more dependencies and we consider dependencies a good thing - it
+many more dependencies. And we consider dependencies a good thing - it
 leads to better APIs, more thought about interworking of modules and so
 on.
 

@@ -1,6 +1,6 @@
 #! perl-000
 
-our $VERSION = '3.72';
+our $VERSION = '3.73';
 
 open STDOUT, ">$ARGV[0]~"
    or die "$ARGV[0]~: $!";
@@ -26,7 +26,7 @@ BEGIN {
 
 no warnings;
 use warnings qw(FATAL closed threads internal debugging pack malloc portable prototype
-                inplace io pipe unpack deprecated glob digit printf
+                inplace io pipe unpack glob digit printf
                 layer reserved taint closure semicolon);
 no warnings qw(exec newline unopened);
 

@@ -1,5 +1,12 @@
 Revision history for perl pragma common::sense.
 
+3.73 Sat May 31 22:37:21 CEST 2014
+	- remove "deprecated", as it turned out to be yet another time bomb
+          as p5p don't care the least about backwards compatibility
+          anymore (https://rt.perl.org/Public/Bug/Display.html?id=119123).
+	- switching paths once more as this turned out to be a doc bug
+          in eumm.  this should not affect anything though.
+
 3.72 Wed Jul 31 19:44:18 CEST 2013
 	- install paths were wrong for current MakeMaker (reported
           by various people).
@@ -61,7 +68,7 @@ Revision history for perl pragma common::sense.
           stuff, it also makes implementing security stuff almost impossible,
           as it completely mangles perls internal utf8 encoding with actual
           utf-8 encoding, and confuses "unicode", "string codepoints" and
-          "utf-8" so much that it becoems practically unusable.
+          "utf-8" so much that it becomes practically unusable.
 
 2.03  Wed Dec  2 18:38:53 CET 2009
 	- removed "unopened" warning category, as this breaks "stat _", which
